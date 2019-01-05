@@ -7,11 +7,16 @@ public class Vertex {
 
     @Override
     public boolean equals(Object obj) {
+        Vertex _obj = (Vertex) obj;
+        return _obj.name.equals(name);
+
+        /*
         if (this == obj) return true;
         if (!(obj instanceof Vertex)) return false;
 
         Vertex _obj = (Vertex) obj;
         return _obj.name == name;
+        */
     }
 
     public String getName() {

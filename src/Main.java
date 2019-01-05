@@ -4,31 +4,23 @@ public class Main {
 
 
     public static void main(String[] args) {
+
+        // Create input / output controller
         IOController io = new IOController();
-        int userChoice = io.readUserInput();
+        Graph graph = new Graph();
+
+        // Read user input
+        //io.readUserInput();
         //int userChoice = 1;
 
-        ArrayList<String> words = io.readWords(userChoice);
+        // Add words from file to graph
+        ArrayList<String> words = io.readWords();
+        graph.addVertexes(words);
 
-        GraphExp graph = new GraphExp();
+        //graph.printGraph();
+        //io.readTestCase(graph);
 
-        // Check for edges and add to edges
-        for (String word : words) {
-            Vertex wordVertex = new Vertex(word);// Create vertex from word
-            graph.addVertex(wordVertex);         // Add word to graph
-
-            for (String word2 : words) {
-                if (!word2.equals(word)) {
-
-                    if (wordHasFourInCommon(word, word2)) {
-                        Vertex word2Vertex = new Vertex(word2);
-                        graph.addEdge(wordVertex, word2Vertex);
-                    }
-                }
-
-            }
-        }
-        graph.printGraph();
+        System.out.println(graph.widthFirstSearch(new Vertex("fzcde"), new Vertex("bcdez")));
 
     }
 
