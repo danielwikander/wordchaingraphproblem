@@ -17,10 +17,10 @@ public class Main {
         ArrayList<String> words = io.readWords();
         graph.addVertexes(words);
 
-        //graph.printGraph();
-        //io.readTestCase(graph);
+        graph.printGraph();
+        io.readTestCase(graph);
 
-        System.out.println(graph.widthFirstSearch(new Vertex("fzcde"), new Vertex("bcdez")));
+        //System.out.println(graph.widthFirstSearch("fzcde", "bcdez"));
 
     }
 

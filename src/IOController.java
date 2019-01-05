@@ -15,8 +15,8 @@ public class IOController {
 //    private File wordFile; // The chosen one
   //  private File testFile; // Test file for the chosen one
 
-    private File wordFile = smallWordFile; // The chosen one
-    private File testFile = smallTestFile; // Test file for the chosen one
+    private File wordFile = mediumWordFile; // The chosen one
+    private File testFile = mediumTestFile; // Test file for the chosen one
 
 
     public void readUserInput() {
@@ -106,8 +106,8 @@ public class IOController {
                     assert line.length() == 11; // indatakoll, om man kör med assertions på
                     String start = line.substring(0, 5);
                     String goal = line.substring(6, 11);
-                    System.out.println(graph.widthFirstSearch(new Vertex(start), new Vertex(goal)));
                     // ... sök väg från start till goal här
+                    System.out.println(graph.widthFirstSearch(start, goal));
                 }
             } catch (IOException e) {
                 System.out.println("Couldn't read file:" + testFile.getAbsolutePath());

@@ -2,24 +2,29 @@ import java.util.*;
 
 class Graph {
     //private LinkedList<Vertex> vertices;
-    private HashMap<Vertex, LinkedList<Vertex>> verticesAndTheirEdges;
+    private HashMap<String, LinkedList<Vertex>> verticesAndTheirEdges; // Key: Namn på vertex Value: Lista med Edges
 
     Graph() {
         //vertices = new LinkedList<>();
         verticesAndTheirEdges = new HashMap<>();
     }
 
-    public int widthFirstSearch(Vertex v1, Vertex v2) {
+
+    // TODO: Varför -1 på alla?
+    public int widthFirstSearch(String v1, String v2) {
         // Skapar en lista av 'besökta' vertices.
-        Map<Vertex, Boolean> visited = new HashMap<Vertex, Boolean>();
+        Map<String, Boolean> visited = new HashMap<String, Boolean>();
+        for (Map.Entry<String, LinkedList<Vertex>> entry : verticesAndTheirEdges.entrySet()) {
+                visited.put(entry.getKey(), false);
+        }
         int depth = 0;
         //for (Vertex vertex : vertices) {
         //    visited.put(vertex, false);
         //}
-        visited.replaceAll((key, val) -> false); // Snabbare?
+        //visited.replaceAll((key, val) -> false); // Snabbare?
 
         // Skapar en kö att iterera
-        LinkedList<Vertex> queue = new LinkedList<Vertex>();
+        LinkedList<String> queue = new LinkedList<String>();
 
         // Lägger till root i visited och lägger i kön.
         visited.put(v1, true);
@@ -30,11 +35,11 @@ class Graph {
             v1 = queue.poll();
 
             // Hämta näriggande vertices, markera dem som besökta och lägg till i kön.
-            System.out.println(verticesAndTheirEdges.get(new Vertex("fzcde")));
+            //System.out.println(verticesAndTheirEdges.get("fzcde"));
 
-            LinkedList<Vertex> adjescent = verticesAndTheirEdges.get(v1); // TODO: Varför nullpointerexception?
+            LinkedList<Vertex> adjescent = verticesAndTheirEdges.get(v1);
             while (adjescent != null && adjescent.peek() != null) {
-                Vertex vertex = adjescent.pop();
+                String vertex = adjescent.pop().getName();
                 if (!visited.get(vertex)) {
                     visited.replace(vertex, true);
                     queue.add(vertex);
@@ -45,7 +50,6 @@ class Graph {
                     }
                 }
                 depth++; // TODO: Trött som fan, är denna på rätt plats?
-
             }
             //depth++; // TODO: Trött som fan, är denna på rätt plats?
         }
@@ -54,15 +58,15 @@ class Graph {
 
     public void addVertexes(ArrayList<String> words) {
         for (String word : words) {
-            Vertex wordVertex = new Vertex(word);// Create vertex from word
-            addVertex(wordVertex);         // Add word to graph
+            //Vertex wordVertex = new Vertex(word);// Create vertex from word
+            addVertex(word);         // Add word to graph
 
             for (String word2 : words) {
                 if (!word2.equals(word)) {
 
                     if (wordHasAllExceptFirstInCommon(word, word2)) {
-                        Vertex word2Vertex = new Vertex(word2);
-                        addEdge(wordVertex, word2Vertex);
+                        //Vertex word2Vertex = new Vertex(word2);
+                        addEdge(word, word2);
                     }
                 }
             }
@@ -94,18 +98,18 @@ class Graph {
         }
     }
 
-    public void addVertex(Vertex v) {
+    public void addVertex(String v) {
         //vertices.add(v);
         verticesAndTheirEdges.put(v, new LinkedList<Vertex>());
     }
 
-    public void addEdge(Vertex v1, Vertex v2) {
+    public void addEdge(String v1, String v2) {
         LinkedList<Vertex> v1AdjacentVertices = verticesAndTheirEdges.get(v1);
-        v1AdjacentVertices.add(v2);
+        v1AdjacentVertices.add(new Vertex(v2));
         // verticesAndTheirEdges.replace(v1, v1AdjacentVertices); Necessary?
     }
 
-    public HashMap<Vertex, LinkedList<Vertex>> getVerticesEdges() {
+    public HashMap<String, LinkedList<Vertex>> getVerticesEdges() {
         return verticesAndTheirEdges;
     }
 
@@ -115,9 +119,9 @@ class Graph {
                 "-------");
         LinkedList<Vertex> edges = new LinkedList<Vertex>();
 
-        for (Map.Entry<Vertex, LinkedList<Vertex>> entry : verticesAndTheirEdges.entrySet()) {
+        for (Map.Entry<String, LinkedList<Vertex>> entry : verticesAndTheirEdges.entrySet()) {
             LinkedList<Vertex> adj = entry.getValue();
-            System.out.println("Vertex: " + entry.getKey().getName());
+            System.out.println("Vertex: " + entry.getKey());
             for (Vertex v : adj) {
                 System.out.println("        " + v.getName());
             }
