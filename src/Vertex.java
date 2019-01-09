@@ -16,7 +16,7 @@ public class Vertex {
         return name.hashCode();
     }
 
-    public String getName() {
+    String getName() {
         return name;
     }
 

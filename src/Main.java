@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class Main {
 
-    // TODO: Optimisering. Väldigt långsam vid 5757 ord.
+    // TODO: Optimisering. Långsam vid 5757 ord.
     public static void main(String[] args) {
 
         // Create input / output controller
@@ -11,7 +11,6 @@ public class Main {
 
         // Read user input
         io.readUserInput();
-        //int userChoice = 1;
 
         // Add words from file to graph
         ArrayList<String> words = io.readWords();
@@ -25,5 +24,4 @@ public class Main {
             System.out.println("Doesn't match expected output.");
         }
     }
-
 }

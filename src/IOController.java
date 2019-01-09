@@ -2,7 +2,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class IOController {
+class IOController {
 
     private File smallWordFile = new File("resources/ord14.txt"),
                 mediumWordFile = new File("resources/ord250.txt"),
@@ -17,13 +17,8 @@ public class IOController {
                       testFile, // Test file for the chosen one
             expectedOutputFile; // Expected outcome for the chosen one
 
-    // private File wordFile = mediumWordFile; // The chosen one
-    // private File testFile = mediumTestFile; // Test file for the chosen one
-    // private File expectedOutputFile = mediumExpectedOutputFile; // Test file for the chosen one
 
-
-    public void readUserInput() {
-
+    void readUserInput() {
         Scanner scanner = new Scanner(System.in);
         String input;
         boolean validInput = true;
@@ -65,15 +60,14 @@ public class IOController {
         try {
             BufferedReader r =
                     new BufferedReader(new InputStreamReader(new FileInputStream(expectedOutputFile)));
-            int[] expectedOutput = new int[output.size()];
-            for (int i = 0; i < output.size(); i++) {
+            for (Integer anOutput : output) {
 
                 String value = r.readLine();
                 if (value == null) {
                     break;
                 }
                 int v = Integer.parseInt(value);
-                if (v == output.get(i)) {
+                if (v == anOutput) {
                     correctValues++;
                 }
             }
@@ -88,13 +82,13 @@ public class IOController {
             try {
                 BufferedReader r =
                         new BufferedReader(new InputStreamReader(new FileInputStream(wordFile)));
-                ArrayList<String> words = new ArrayList<String>();
+                ArrayList<String> words = new ArrayList<>();
                 while (true) {
                     String word = r.readLine();
                     if (word == null) {
                         break;
                     }
-                    assert word.length() == 5; // indatakoll, om man kör med assertions på
+                    assert word.length() == 5;
                     words.add(word);
                 }
                 System.out.println();
@@ -111,7 +105,7 @@ public class IOController {
 
     ArrayList<Integer> readTestCase(Graph graph) {
         if (wordFile != null && testFile != null) { // Checks if user has chosen which file to read.
-            ArrayList<Integer> outputValues = new ArrayList();
+            ArrayList<Integer> outputValues = new ArrayList<>();
             try {
                 BufferedReader r =
                         new BufferedReader(new InputStreamReader(new FileInputStream(testFile)));
@@ -125,7 +119,9 @@ public class IOController {
                     String goal = line.substring(6, 11);
                     // ... sök väg från start till goal här
                     outputValues.add(graph.bfs(new Vertex(start), new Vertex(goal)));
-                    System.out.println(graph.bfs(new Vertex(start), new Vertex(goal)));
+                }
+                for (Integer value:outputValues) {
+                    System.out.println(value);
                 }
                 return outputValues;
             } catch (IOException e) {
