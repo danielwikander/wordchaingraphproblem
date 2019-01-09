@@ -32,15 +32,16 @@ class Graph {
     }
 
     void addVertexes(ArrayList<String> words) {
+        // Create vertices from words, and add them to graph
         for (String word : words) {
-            Vertex wordVertex = new Vertex(word); // Create vertex from word
-            addVertex(wordVertex);                // Add word to graph
+            Vertex wordVertex = new Vertex(word);
+            addVertex(wordVertex);
         }
 
+        // Go through the vertices and add edges where applicable.
         for (Map.Entry<Vertex, LinkedList<Vertex>> vertex : verticesAndTheirEdges.entrySet()) {
             for (Map.Entry<Vertex, LinkedList<Vertex>> vertex2 : verticesAndTheirEdges.entrySet()) {
                 if (!vertex.getKey().getName().equals(vertex2.getKey().getName())) {
-
                     if (wordHasAllExceptFirstInCommon(vertex.getKey().getName(), vertex2.getKey().getName())) {
                         addEdge(vertex.getKey(), vertex2.getKey());
                     }
@@ -85,8 +86,8 @@ class Graph {
     void printGraph() {
         System.out.println(
                 "All vertices in the graph are presented below.\n" +
-                "Their individual edges presented after a tab. \n" +
-                "-------");
+                        "Their individual edges presented after a tab. \n" +
+                        "-------");
 
         for (Map.Entry<Vertex, LinkedList<Vertex>> entry : verticesAndTheirEdges.entrySet()) {
             LinkedList<Vertex> adj = entry.getValue();

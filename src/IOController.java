@@ -25,9 +25,9 @@ class IOController {
         do {
             System.out.println(
                     "Välj ordmängd:\n" +
-                            "1: 14 ord     \n" +
-                            "2: 250 ord    \n" +
-                            "3: 5757 ord     ");
+                    "1: 14 ord     \n" +
+                    "2: 250 ord    \n" +
+                    "3: 5757 ord     ");
 
             input = scanner.nextLine();
             switch (input) {
@@ -92,7 +92,6 @@ class IOController {
                     words.add(word);
                 }
                 System.out.println();
-                // words.forEach(System.out::println); // Prints all words in file
                 return words;
             } catch (IOException e) {
                 System.out.println("Couldn't read file:" + wordFile.getAbsolutePath());
@@ -104,7 +103,7 @@ class IOController {
     }
 
     ArrayList<Integer> readTestCase(Graph graph) {
-        if (wordFile != null && testFile != null) { // Checks if user has chosen which file to read.
+        if (wordFile != null && testFile != null && expectedOutputFile != null) { // Checks if user has chosen which file to read.
             ArrayList<Integer> outputValues = new ArrayList<>();
             try {
                 BufferedReader r =
