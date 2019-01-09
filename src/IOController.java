@@ -4,19 +4,22 @@ import java.util.Scanner;
 
 public class IOController {
 
-    private File smallWordFile = new File("resources/ord14.txt");
-    private File mediumWordFile = new File("resources/ord250.txt");
-    private File largeWordFile = new File("resources/ord5757.txt");
+    private File smallWordFile = new File("resources/ord14.txt"),
+                mediumWordFile = new File("resources/ord250.txt"),
+                 largeWordFile = new File("resources/ord5757.txt"),
+                 smallTestFile = new File("resources/testFall14.txt"),
+                mediumTestFile = new File("resources/testFall250.txt"),
+                 largeTestFile = new File("resources/testFall5757.txt"),
+       smallExpectedOutputFile = new File("resources/forvantatOutput14.txt"),
+      mediumExpectedOutputFile = new File("resources/forvantatOutput250.txt"),
+       largeExpectedOutputFile = new File("resources/forvantatOutput5757.txt"),
+                      wordFile, // The chosen one
+                      testFile, // Test file for the chosen one
+            expectedOutputFile; // Expected outcome for the chosen one
 
-    private File smallTestFile = new File("resources/testFall14.txt");
-    private File mediumTestFile = new File("resources/testFall250.txt");
-    private File largeTestFile = new File("resources/testFall5757.txt");
-
-//    private File wordFile; // The chosen one
-  //  private File testFile; // Test file for the chosen one
-
-    private File wordFile = mediumWordFile; // The chosen one
-    private File testFile = mediumTestFile; // Test file for the chosen one
+    // private File wordFile = mediumWordFile; // The chosen one
+    // private File testFile = mediumTestFile; // Test file for the chosen one
+    // private File expectedOutputFile = mediumExpectedOutputFile; // Test file for the chosen one
 
 
     public void readUserInput() {
@@ -25,49 +28,62 @@ public class IOController {
         String input;
         boolean validInput = true;
         do {
-            System.out.println("Välj ordmängdj:\n" +
-                    "1: 14 ord\n" +
-                    "2: 250 ord\n" +
-                    "3: 5757 ord");
+            System.out.println(
+                    "Välj ordmängd:\n" +
+                            "1: 14 ord     \n" +
+                            "2: 250 ord    \n" +
+                            "3: 5757 ord     ");
 
             input = scanner.nextLine();
-            if (input.equals("1")) {
-                wordFile = smallWordFile;
-                testFile = smallTestFile;
-            } else if (input.equals("2")) {
-                wordFile = mediumWordFile;
-                testFile = mediumTestFile;
-            } else if (input.equals("3")) {
-                wordFile = largeWordFile;
-                testFile = largeTestFile;
-            } else {
-                System.out.println("Invalid input. Please type 1, 2 or 3.\n");
-                validInput = false;
-            }
+            switch (input) {
+                case "1":
+                    wordFile = smallWordFile;
+                    testFile = smallTestFile;
+                    expectedOutputFile = smallExpectedOutputFile;
 
+                    break;
+                case "2":
+                    wordFile = mediumWordFile;
+                    testFile = mediumTestFile;
+                    expectedOutputFile = mediumExpectedOutputFile;
+                    break;
+                case "3":
+                    wordFile = largeWordFile;
+                    testFile = largeTestFile;
+                    expectedOutputFile = largeExpectedOutputFile;
+                    break;
+                default:
+                    System.out.println("Invalid input. Please type 1, 2 or 3.\n");
+                    validInput = false;
+                    break;
+            }
         } while (!validInput);
     }
 
-    /*public ArrayList<String> readWords() {
-        if (wordFile !=null && testFile !=null) {
+    boolean matchesExpectedOutput(ArrayList<Integer> output) {
+        int correctValues = 0;
+        try {
+            BufferedReader r =
+                    new BufferedReader(new InputStreamReader(new FileInputStream(expectedOutputFile)));
+            int[] expectedOutput = new int[output.size()];
+            for (int i = 0; i < output.size(); i++) {
 
-        } else {
-            System.out.println("Please choose which files to read before attempting to read them..");
+                String value = r.readLine();
+                if (value == null) {
+                    break;
+                }
+                int v = Integer.parseInt(value);
+                if (v == output.get(i)) {
+                    correctValues++;
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Couldn't read file:" + expectedOutputFile.getAbsolutePath());
         }
-        ArrayList words = null;
-        if (choice == 1) {
-            words = readWords(smallWordFile);
-        } else if (choice == 2) {
-            words = readWords(mediumWordFile);
-        } else if (choice == 3) {
-            words = readWords(largeWordFile);
-        } else {
-            System.out.println("Error: File could not be read.");
-        }
-        return words;
-    } */
+        return (correctValues == output.size());
+    }
 
-    public ArrayList<String> readWords() {
+    ArrayList<String> readWords() {
         if (wordFile != null && testFile != null) { // Checks if user has chosen which file to read.
             try {
                 BufferedReader r =
@@ -93,8 +109,9 @@ public class IOController {
         return null;
     }
 
-    public void readTestCase(Graph graph) {
+    ArrayList<Integer> readTestCase(Graph graph) {
         if (wordFile != null && testFile != null) { // Checks if user has chosen which file to read.
+            ArrayList<Integer> outputValues = new ArrayList();
             try {
                 BufferedReader r =
                         new BufferedReader(new InputStreamReader(new FileInputStream(testFile)));
@@ -107,14 +124,16 @@ public class IOController {
                     String start = line.substring(0, 5);
                     String goal = line.substring(6, 11);
                     // ... sök väg från start till goal här
-                    System.out.println(graph.widthFirstSearch(start, goal));
+                    outputValues.add(graph.bfs(new Vertex(start), new Vertex(goal)));
+                    System.out.println(graph.bfs(new Vertex(start), new Vertex(goal)));
                 }
+                return outputValues;
             } catch (IOException e) {
                 System.out.println("Couldn't read file:" + testFile.getAbsolutePath());
             }
         } else {
             System.out.println("Please choose which files to read before attempting to read them..");
         }
+        return null;
     }
-
 }
