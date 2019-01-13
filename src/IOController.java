@@ -2,6 +2,10 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * Handles input and output for the program.
+ * Has functions for reading files and user input.
+ */
 class IOController {
 
     private File smallWordFile = new File("resources/ord14.txt"),
@@ -18,10 +22,13 @@ class IOController {
             expectedOutputFile; // Expected outcome for the chosen one
 
 
+    /**
+     * Reads user input, and selects what files to use accordingly.
+     */
     void readUserInput() {
         Scanner scanner = new Scanner(System.in);
         String input;
-        boolean validInput = true;
+        boolean validInput = false;
         do {
             System.out.println(
                     "Välj ordmängd:\n" +
@@ -35,26 +42,32 @@ class IOController {
                     wordFile = smallWordFile;
                     testFile = smallTestFile;
                     expectedOutputFile = smallExpectedOutputFile;
-
+                    validInput = true;
                     break;
                 case "2":
                     wordFile = mediumWordFile;
                     testFile = mediumTestFile;
                     expectedOutputFile = mediumExpectedOutputFile;
+                    validInput = true;
                     break;
                 case "3":
                     wordFile = largeWordFile;
                     testFile = largeTestFile;
                     expectedOutputFile = largeExpectedOutputFile;
+                    validInput = true;
                     break;
                 default:
                     System.out.println("Invalid input. Please type 1, 2 or 3.\n");
-                    validInput = false;
                     break;
             }
         } while (!validInput);
     }
 
+    /**
+     * Checks if the programs output matches the expected output from the selected files.
+     * @param output    The programs output.
+     * @return          True if the programs output matches the values in the expectedOutputFile.
+     */
     boolean matchesExpectedOutput(ArrayList<Integer> output) {
         int correctValues = 0;
         try {
@@ -77,6 +90,10 @@ class IOController {
         return (correctValues == output.size());
     }
 
+    /**
+     * Reads the words from the selected word file.
+     * @return  ArrayList of words from the selected file.
+     */
     ArrayList<String> readWords() {
         if (wordFile != null && testFile != null) { // Checks if user has chosen which file to read.
             try {
@@ -102,6 +119,14 @@ class IOController {
         return null;
     }
 
+    /**
+     * Reads the testcase from the test file.
+     * For each pair of words from the testfile, the function
+     * calls a breadth first search between the words in the graph
+     * and saves the output in an arraylist.
+     * @param graph The graph to read.
+     * @return      Arraylist of distances between the words from the file.
+     */
     ArrayList<Integer> readTestCase(Graph graph) {
         if (wordFile != null && testFile != null && expectedOutputFile != null) { // Checks if user has chosen which file to read.
             ArrayList<Integer> outputValues = new ArrayList<>();
@@ -119,6 +144,7 @@ class IOController {
                     // ... sök väg från start till goal här
                     outputValues.add(graph.bfs(new Vertex(start), new Vertex(goal)));
                 }
+                System.out.println("Distance between the selected vertices:");
                 for (Integer value:outputValues) {
                     System.out.println(value);
                 }
