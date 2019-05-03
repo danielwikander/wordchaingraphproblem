@@ -6,4 +6,4 @@ A word can be chained with another if and only if the last four letters in word 
 
 ![Wordchain ](https://github.com/danielwikander/wordchaingraphproblem/blob/master/graphexample.png)
 
-The sourcefiles contains my own implementation of a graph and breadth first search to find the shortest path between two words. 
+The sourcefiles contains my own implementation of a graph and breadth first search to find the shortest path between two words. All written in Java.
